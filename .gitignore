@@ -1,0 +1,16 @@
+# Dependencies
+/node_modules
+
+# Build files
+/dist
+
+# Environment variables
+.env
+
+# Docker data
+/postgres-data
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

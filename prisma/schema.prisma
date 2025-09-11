@@ -1,0 +1,48 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo para os Produtos da loja
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  imageUrl    String?  // URL da imagem do produto
+  stock       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamento: Um produto pertence a uma categoria
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+}
+
+// Modelo para as Categorias de produtos
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+
+  // Relacionamento: Uma categoria pode ter vários produtos
+  products Product[]
+}
+
+// Modelo para os Usuários/Clientes
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String   // A senha será armazenada como um hash
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Adicionaremos os modelos de Pedido (Order) e Itens do Pedido (OrderItem) mais tarde.
+// Vamos focar nos produtos primeiro.

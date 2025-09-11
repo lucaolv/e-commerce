@@ -1,0 +1,24 @@
+# Versão do docker-compose
+version: "3.8"
+
+# Definição dos serviços (contêineres)
+services:
+  # Nome do nosso serviço de banco de dados
+  db:
+    # Imagem oficial do PostgreSQL. Usamos a versão 16 com base Alpine (mais leve)
+    image: postgres:16-alpine
+    # Sempre reiniciar o contêiner se ele parar, exceto quando for parado manualmente
+    restart: always
+    # Variáveis de ambiente para configurar o PostgreSQL
+    environment:
+      POSTGRES_USER: meu_usuario_db
+      POSTGRES_PASSWORD: minha_senha_forte
+      POSTGRES_DB: ecommerce_db
+    # Mapeamento de portas: <porta_na_sua_maquina>:<porta_no_container>
+    # Isso permite que sua aplicação se conecte ao banco através de localhost:5432
+    ports:
+      - "5432:5432"
+    # Volumes para persistir os dados do banco de dados
+    # Isso garante que seus dados não sejam perdidos ao reiniciar o contêiner
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
