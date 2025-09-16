@@ -1,0 +1,7 @@
+# Variáveis para o Docker Compose
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+
+# A URL do Prisma agora usa as mesmas variáveis, mantendo tudo em um só lugar
+DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@localhost:5432/${DB_NAME}?schema=public"
