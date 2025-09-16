@@ -1,17 +1,20 @@
 import { Request, Response } from "express";
 import * as categoryService from "../services/category.service";
+import { z } from "zod";
+import { createCategorySchema } from "../schemas/category.schema";
 
 export const createNewCategory = async (req: Request, res: Response) => {
   try {
-    const { name } = req.body;
-    if (!name) {
-      return res
-        .status(400)
-        .json({ error: "O nome da categoria é obrigatório." });
-    }
-    const newCategory = await categoryService.createCategory(name);
+    const validatedData = createCategorySchema.parse(req.body);
+
+    const newCategory = await categoryService.createCategory(
+      validatedData.name
+    );
     res.status(201).json(newCategory);
   } catch (error: any) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: error.flatten().fieldErrors });
+    }
     res.status(500).json({ error: error.message });
   }
 };
